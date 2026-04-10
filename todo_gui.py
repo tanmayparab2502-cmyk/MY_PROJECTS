@@ -3,7 +3,7 @@ from tkinter import messagebox, simpledialog
 import json
 import os
 
-# File where tasks will be permanently tracked/saved
+
 FILE_NAME = "todo_gui_tasks.json"
 
 class TodoApp:
@@ -13,13 +13,13 @@ class TodoApp:
         self.root.geometry("400x550")
         self.root.config(bg="#f0f0f0")
         
-        # Load tracked tasks
+   
         self.tasks = self.load_tasks()
         
         self.setup_ui()
         self.refresh_listbox()
 
-    # --- Data Management ---
+  
     def load_tasks(self):
         """Loads tracked tasks from the JSON file."""
         if os.path.exists(FILE_NAME):
@@ -32,26 +32,26 @@ class TodoApp:
         with open(FILE_NAME, 'w') as file:
             json.dump(self.tasks, file, indent=4)
 
-    # --- UI Setup ---
+ 
     def setup_ui(self):
         """Builds the buttons, listbox, and entry fields."""
-        # Title Label
+     
         title_label = tk.Label(self.root, text="Daily Tasks", font=("Helvetica", 18, "bold"), bg="#f0f0f0")
         title_label.pack(pady=10)
 
-        # Input Frame (Entry + Add Button)
+
         input_frame = tk.Frame(self.root, bg="#f0f0f0")
         input_frame.pack(pady=5, padx=20, fill=tk.X)
 
         self.task_entry = tk.Entry(input_frame, font=("Helvetica", 12))
         self.task_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 10))
-        self.task_entry.bind("<Return>", lambda event: self.add_task()) # Allow pressing Enter
+        self.task_entry.bind("<Return>", lambda event: self.add_task()) 
 
         add_btn = tk.Button(input_frame, text="Add Task", font=("Helvetica", 10, "bold"), 
                             bg="#4CAF50", fg="white", command=self.add_task)
         add_btn.pack(side=tk.RIGHT)
 
-        # Listbox Frame (Listbox + Scrollbar)
+   
         list_frame = tk.Frame(self.root)
         list_frame.pack(pady=10, padx=20, fill=tk.BOTH, expand=True)
 
@@ -63,11 +63,11 @@ class TodoApp:
         self.listbox.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.config(command=self.listbox.yview)
 
-        # Action Buttons Frame
+        
         btn_frame = tk.Frame(self.root, bg="#f0f0f0")
         btn_frame.pack(pady=10, fill=tk.X)
 
-        # Buttons for Updating and Deleting
+  
         complete_btn = tk.Button(btn_frame, text="Mark Done / Undone", command=self.toggle_complete)
         complete_btn.pack(side=tk.LEFT, expand=True, padx=5)
 
@@ -77,7 +77,7 @@ class TodoApp:
         delete_btn = tk.Button(btn_frame, text="Delete Task", bg="#f44336", fg="white", command=self.delete_task)
         delete_btn.pack(side=tk.LEFT, expand=True, padx=5)
 
-    # --- Application Logic ---
+
     def refresh_listbox(self):
         """Clears and repopulates the listbox based on current tracked tasks."""
         self.listbox.delete(0, tk.END)
@@ -86,7 +86,7 @@ class TodoApp:
             display_text = f"[{status}] {task['name']}"
             self.listbox.insert(tk.END, display_text)
             
-            # Strike through visually if done by changing color
+         
             if task["done"]:
                 self.listbox.itemconfig(tk.END, {'fg': 'gray'})
             else:
@@ -107,7 +107,7 @@ class TodoApp:
         """Updates a task by marking it done or undone."""
         try:
             selected_index = self.listbox.curselection()[0]
-            # Toggle the boolean value
+        
             self.tasks[selected_index]["done"] = not self.tasks[selected_index]["done"]
             self.save_tasks()
             self.refresh_listbox()
@@ -120,7 +120,7 @@ class TodoApp:
             selected_index = self.listbox.curselection()[0]
             current_name = self.tasks[selected_index]["name"]
             
-            # Ask user for new name
+         
             new_name = simpledialog.askstring("Edit Task", "Update task name:", initialvalue=current_name)
             
             if new_name and new_name.strip():
